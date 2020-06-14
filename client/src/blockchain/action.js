@@ -10,18 +10,18 @@ const instance = new web3.eth.Contract(
 export const addingFile = async (ipfshash) => {
   const accounts = await web3.eth.getAccounts();
   console.log(accounts);
+  console.log(ipfshash)
   const receipt = await instance.methods
     .storingHash(ipfshash)
     .send({ from: accounts[0] });
   console.log(receipt);
 };
 
-export const retrieveFile = async () => {
+export const retrieveFile = async (result) => {
   const accounts = await web3.eth.getAccounts();
   console.log(accounts);
   const receipt = await instance.methods
-    .checkInbox()
-    .call({ from: accounts[0] });
-  console.log(receipt);
+    .checkInbox(result).call({from: accounts[0]});
+  console.log(receipt)
   return receipt;
 };

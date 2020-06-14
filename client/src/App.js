@@ -2,6 +2,7 @@ import React from "react";
 import "./App.css";
 import { Col, Row } from "react-bootstrap";
 import Navbar from "./components/navbar";
+import Footer from "./components/footer";
 import Store from "./components/store";
 import Retrieve from "./components/retrieve";
 
@@ -13,7 +14,7 @@ function App() {
           <Navbar name="Photo Timestamping" />
         </Col>
       </Row>
-      <Row>
+      <Row style={{ marginTop: "50px" }}>
         <Col>
           <Store />
         </Col>
@@ -21,10 +22,10 @@ function App() {
           <Retrieve />
         </Col>
       </Row>
-      <Row>
+      <Row style={{ marginTop: "50px" }}>
         <Col>
           {" "}
-          <Navbar name="Made By: Bhasin Neeraj" />
+          <Footer name="Made By: Bhasin Neeraj" />
         </Col>
       </Row>
     </div>

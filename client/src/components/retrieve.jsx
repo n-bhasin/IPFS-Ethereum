@@ -1,51 +1,62 @@
 import React, { useState } from "react";
+import { InputGroup, FormControl } from "react-bootstrap";
 import { retrieveFile } from "../blockchain/action";
 import ipfs from "../ipfs";
 
 const Retrieve = () => {
   const [address, setAddress] = useState(null);
   const [receivedFile, setReceivedFile] = useState(null);
-  const captureHash = (event) => {
+
+  const captureHash = async (event) => {
     event.preventDefault();
     const userAddress = event.target.value;
     console.log(userAddress);
-    const receipt = retrieveFile();
+
+    const receipt = await retrieveFile(userAddress);
     console.log(receipt);
     setAddress(receipt);
-    // getFile(receipt);
+    getFile(receipt);
   };
-  const getFile = async (event) => {
-    event.preventDefault();
-    const result = event.target.value;
+  const getFile = async (result) => {
+    // event.preventDefault();
+    // const result = event.target.value;
     await ipfs.files.get(result, (err, res) => {
       res.forEach((file) => {
         console.log("filepath", file.path);
-
+        const filePath = file.path;
         const getImage = file.content.toString("utf8");
         console.log("file content => ", getImage);
-        setReceivedFile(getImage);
+        setReceivedFile(filePath);
       });
     });
   };
-  const onAddressSubmit = (event) => {
-    event.preventDefault();
-  };
+
   return (
     <div>
-      <form
-        id="ipfs-hash-form"
-        className="scep-form"
-        onSubmit={onAddressSubmit.bind(this)}
-      >
-        <input type="text" onChange={captureHash} />
-        <button type="submit" onClick={captureHash}>
-          Send it
-        </button>
-      </form>
-
+      <h3>Please Input your address to retrieve the hash & image</h3>
+      <InputGroup size="lg" className="mb-3">
+        <FormControl
+          aria-label="Large"
+          aria-describedby="inputGroup-sizing-sm"
+          style={{
+            borderRadius: "50px",
+            backgroundColor: "#F0F2F5",
+            border: 0,
+            caretColor: "#007bff",
+          }}
+          placeholder="Search Your Stock"
+          className="customInput"
+          onChange={(e) => captureHash(e)}
+          autoFocus
+        />
+      </InputGroup>
       {address}
-      <p>{receivedFile}</p>
-      <img src="{receivedFile}" alt="" />
+      <br />
+      {address != null ? (
+        <img src={`https://ipfs.io/ipfs/${receivedFile}`} alt="No-images" />
+      ) : (
+        "There is no image"
+      )}
     </div>
   );
 };

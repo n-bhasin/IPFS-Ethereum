@@ -87,13 +87,9 @@ contract IpfsStorage {
       If the length of hash if 0 then return the custom message otherwise hash.
       author: Bhasin Neeraj
      */
-    function checkInbox() public {
-        string memory ipfs_hash = ipfsHash[msg.sender];
-        if (bytes(ipfs_hash).length == 0) {
-            emit ReceivedHash("Empty Inbox");
-        } else {
-            // ipfsHash[msg.sender] = "";
-            emit ReceivedHash(ipfs_hash);
-        }
+    function checkInbox(address _to) public  view returns(string memory){
+        string memory ipfs_hash = ipfsHash[_to];
+        require(bytes(ipfs_hash).length != 0, "No hash");
+        return ipfsHash[_to];
     }
 }
